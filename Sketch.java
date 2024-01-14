@@ -5,10 +5,10 @@ import java.util.Arrays;
 import java.util.Collections;
 
 public class Sketch extends PApplet {
-
+    // declaring variables for Catching Ingredients (Game 1)
     PImage imgBackground;
     PImage imgBasket;
-    PImage[] imgBurgerImages = new PImage[5]; //Array will hold four images
+    PImage[] imgBurgerImages = new PImage[5]; //Array will hold five images
     Float[] fltImageX = new Float [5]; // hold X positions of images
     Float[] fltImageY = new Float[5]; // hold y opsitions of the images
     Boolean[] blnImageHide = {false, false, false, false, false};  
@@ -22,8 +22,18 @@ public class Sketch extends PApplet {
 
   
     int intCatcherX;
-    int intTime1 = 1000;
-
+    int intTime1;
+    
+    // declaring variables for making burger (Game 2)
+    PImage imgBackground2;
+    PImage imgPlate;
+    PImage[] imgBurgerImages2 = new PImage[5]; // Array will hold five images`
+    Boolean[] blnImageHide2 = {false, false, false, false, false}; 
+    String strPlateList;
+    int intStart = (int) random(0, 4);
+    int addNumber = (int) random(2, 4);
+    PImage[] imgBox2 = new PImage[5];
+    Boolean[] blnBoxHide2 = {false, false, false, false, false}; 
 
     public void settings() {
         // size call
@@ -35,8 +45,8 @@ public class Sketch extends PApplet {
         imgBackground.resize(800, 600);
         imgBasket = loadImage("data/basket.png");
         imgBasket.resize(150, 75);
+        intTime1 = 1000;
         
-
         // Set the initial position of the catcher
         intCatcherX = width / 2;
 
@@ -54,12 +64,27 @@ public class Sketch extends PApplet {
         Arrays.setAll(fltImageX, i -> (float)random(width));
         Arrays.setAll(fltImageY, i -> (float)(imgBurgerImages[i].height) * -1);
 
-        order.addAll(Arrays.asList(0, 1, 2, 3, 4));
+        imgBackground2 = loadImage("data/game 2 background.jpg");
+        imgBackground2.resize(800, 600);
+        imgPlate = loadImage("data/plate.png");
+        imgPlate.resize(400, 400);
+
+        imgBurgerImages2[0] = loadImage("data/burger bun.png");
+        imgBurgerImages2[0].resize(80, 80);
+        imgBurgerImages2[1] = loadImage("data/burger patty.png");
+        imgBurgerImages2[1].resize(100,100);
+        imgBurgerImages2[2] = loadImage("data/burger cheese.png");
+        imgBurgerImages2[2].resize(100, 100);
+        imgBurgerImages2[3] = loadImage("data/burger lettuce.png");
+        imgBurgerImages2[3].resize(100, 100);
+        imgBurgerImages2[4] = loadImage("data/burger sauce.png");
+        imgBurgerImages2[4].resize(80, 80);
+
+        for(int i = 0; i < 5; i++){
+            imgBox2[i] = loadImage("data/box2.png");
+            imgBox2[i].resize(100,100);
+        }
     
-        Collections.shuffle(Arrays.asList(fltImageX));
-        Collections.shuffle(Arrays.asList(fltImageY));
-        Collections.shuffle(order);
- 
     }
 
     
@@ -68,7 +93,40 @@ public class Sketch extends PApplet {
      * Called repeatedly, anything drawn to the screen goes here
      */
     public void draw() {
-        catchIngredients();
+        makeBurger();
+        //System.out.println(makeBurger());
+        //System.out.println(catchIngredients());
+    }
+
+    public int makeBurger(){
+        image(imgBackground2, 0, 0);
+        for(int i = 0; i < 5; i++){
+            if(blnImageHide2[i] == false){
+                image(imgBurgerImages2[intStart], 70 + 140 * (i), 220);
+                if(blnBoxHide2[i] == false){
+                    image(imgBox2[intStart], 70 + 140 * (i), 220);
+                }
+                intStart += addNumber;
+                if (intStart > 4){
+                    intStart = intStart - 5;
+                }
+            }
+
+            if (mousePressed) {
+                if(dist(mouseX, mouseY, 70+140*(intStart) + 35, 220) < 90){
+                    blnBoxHide2[intStart] = true;
+                    System.out.print(intStart);    
+              }
+            }
+        }
+
+        image (imgPlate, 200, 300);
+        
+
+        fill(0, 0, 0);
+        textSize(25);
+        text("ITEM NEEDED:",315, 480);
+        return 0;
     }
 
     public int catchIngredients(){
@@ -116,9 +174,10 @@ public class Sketch extends PApplet {
 
         // Draw the catcher 
         image(imgBasket, intCatcherX, 380);
+        // draw the timer to show over the images
         timer1();
 
-        return 2;
+        return 0;
 
     }
 
@@ -175,25 +234,6 @@ public class Sketch extends PApplet {
             text("0",445, 530);
             textSize(25);
         }
-    }
-
-
-    public void gameOver() {
-        // Game over logic
-        textAlign(CENTER, CENTER);
-        textSize(50);
-        fill(255, 0, 0);
-        text("Game Over",width/2, height/2);
-        noLoop();
-    }
-
-    public void gameWon() {
-        // Game won logic
-        textAlign(CENTER, CENTER);
-        textSize(50);
-        fill(0, 255, 0);
-        text("You Won!", width/2, height/2);
-        noLoop();
     }
 
 
