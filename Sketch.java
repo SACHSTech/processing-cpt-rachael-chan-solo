@@ -43,7 +43,7 @@ public class Sketch extends PApplet {
     int intBurgerX;
     int intBurgerY;
     PImage imgFireAlert;
-    boolean blnFireAlertHide = false;
+    boolean blnFireAlertHide;
 
     boolean keyAPressed = false;
     boolean keySPressed = false;
@@ -142,6 +142,7 @@ public class Sketch extends PApplet {
         imgFireAlert = loadImage("data/fire alert.png");
         imgFireAlert.resize(600, 450);
         intBoxShowTimer = 300;
+        blnFireAlertHide = false;
     }
 
     
@@ -150,9 +151,9 @@ public class Sketch extends PApplet {
      * Called repeatedly, anything drawn to the screen goes here
      */
     public void draw() {
+        //makeBurger();
+        //fireOut();
         makeBurger();
-        // fireOut();
-        //System.out.println(makeBurger());
         //System.out.println(catchIngredients());
     }
 
@@ -162,29 +163,24 @@ public class Sketch extends PApplet {
         image(imgBurger3, intBurgerX, intBurgerY);
         System.out.println(intBurgerX + " " + intBurgerY);
 
-        if (mousePressed){
-            System.out.println(mouseX);
-            System.out.println(mouseY);
-            // blnFireAlertHide = true;
-        }
-
 
         if((intBurgerX == 345) && (intBurgerY == 259)){
             //display the "Oh no, the kitchen caught on fire! Click on the fire to put them out"
 
-
-            while(blnFireAlertHide == false){
+            if(blnFireAlertHide == false){
                 // System.out.println(blnFireAlertHide);
                 image(imgFireAlert, 0, 0);
             }
 
-            if (mousePressed){
-                System.out.println(mouseX);
-                System.out.println(mouseY);
-                blnFireAlertHide = true;
+            if(blnFireAlertHide == true){
+
             }
 
-            while(blnFireAlertHide == true){
+
+            System.out.println(blnFireAlertHide);
+
+
+            if(blnFireAlertHide == true){
                 System.out.println("timer start");
                 timer3();
             }
@@ -260,6 +256,7 @@ public class Sketch extends PApplet {
             if (mousePressed) {
                 if(dist(mouseX, mouseY, 70 + 140 * (i) + 35, 220) < 90){
                     blnBoxHide2[i] = true;
+                    /* 
                     while(blnBoxHide2[i] = true){
                         if (intAnswerArr[i] == 0){
                             //image(imgPlate, 200, 300);
@@ -268,81 +265,39 @@ public class Sketch extends PApplet {
                         // text("ITEM NEEDED:",315, 480);
                             text("I'm here!", 20, 20);
                             System.out.println("boxpressed");
-                    }
+                        }
                     //System.out.print(intAnswerArr[i]); 
                     System.out.print(i);
-                    System.out.print(blnBoxHide2[i]);
+                    System.out.print(blnBoxHide2[i] + i);
+                    }
+                    */
+
+                    System.out.print(i);
+
+                    
                 }
             }
 
-            if (intAnswerArr[i] == 0){
+            /*if (intAnswerArr[i] == 0){
                 //image(imgPlate, 200, 300);
                 //fill(0, 0, 0);
                 //textSize(25);
             // text("ITEM NEEDED:",315, 480);
                 text("I'm here!", 20, 20);
                 System.out.println("boxpressed");
-            } 
+            }
+            */ 
 
         }
-        
-        
-
-        /*while(intBoxShowTimer <= 0){
-            if (blnBoxHide2[0] == true){
-                //image(imgPlate, 200, 300);
-                //fill(0, 0, 0);
-                //textSize(25);
-            // text("ITEM NEEDED:",315, 480);
-                text("I'm here!", 20, 20);
-                System.out.println("boxpressed");
-            } 
-        }
-         */
-
-        
-
 
         image(imgPlate, 200, 300);
         fill(0, 0, 0);
         textSize(25);
         text("ITEM NEEDED:",315, 480);
-  
 
-        
+        return 0;
 
-
-/*         
-        for(int i = 0; i < 5; i++){
-            if(blnImageHide2[i] == false){
-                image(imgBurgerImages2[intStart], 70 + 140 * (i), 220);
-                if(blnBoxHide2[i] == false){
-                    image(imgBox2[intStart], 70 + 140 * (i), 220);
-                }
-                intStart += addNumber;
-                if (intStart > 4){
-                    intStart = intStart - 5;
-                }
-            }
-
-            if (mousePressed) {
-                if(dist(mouseX, mouseY, 70 + 140 * (intStart) + 35, 220) < 90){
-                    blnBoxHide2[intStart] = true;
-                    System.out.print(intStart);    
-                }
-            }
-            
-           // int intAnswer = intStart;
-
-        }
-*/
-        /*int intOrder[] = new int[5];
-        for(int i = 0; i < 5; i++){
-            intOrder[]
-        }
-        */
     }
-}
 
     public int catchIngredients(){
 
@@ -542,6 +497,10 @@ public class Sketch extends PApplet {
         // if W is pressed, keyWPressed is set to true
         else if (key == 'w') {
             keyWPressed = true;
+        }
+
+        if(key == 'f'){
+            blnFireAlertHide = true;
         }
     }
 
