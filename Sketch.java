@@ -62,7 +62,7 @@ public class Sketch extends PApplet {
     boolean blnFireIsOut = false;
 
     PImage imgGameStart;
-    boolean blnGameStartShow = false;
+    boolean blnGameStartShow = true;
     PImage imgInstructions1;
     boolean blnInstructions1Show = false;
     PImage imgInstructions2;
@@ -80,6 +80,8 @@ public class Sketch extends PApplet {
     boolean blnIsDoneInstructions1 = false;
     boolean blnIsDoneInstructions2 = false;
     boolean blnIsDoneInstructions3 = false;
+
+    boolean blnGameStarted = false;
 
 
     public void settings() {
@@ -188,7 +190,7 @@ public class Sketch extends PApplet {
         imgWin = loadImage("data/win.png");
         imgWin.resize(800,600);
 
-        blnInstructions1Show = true; // might have to change when front page added to false
+        blnInstructions1Show = false; // might have to change when front page added to false
     }
 
     
@@ -197,37 +199,26 @@ public class Sketch extends PApplet {
      * Called repeatedly, anything drawn to the screen goes here
      */
     public void draw() {
-        //gameRun();
+        gameRun();
         //makeBurger();
         //System.out.println(fireOut());
         //makeBurger();
-        System.out.println(catchIngredients());
+        //System.out.println(catchIngredients());
     }
 
     public void gameRun(){
-        image(imgGameStart, 0, 0);
+        if(blnGameStartShow == true){
+            image(imgGameStart, 0, 0);
+        }
 
         if(key == 'b'){
-            image(imgInstructions1, 0, 0);
-
+            blnGameStartShow = false;
+            blnInstructions1Show = true;
+            blnGameStarted = true;
         }
 
-        /*if(key == 'v'){
-            image(imgGameStart, 0, 0);
-        }*/
-
-        if(key == 'n'){
+        if (blnGameStarted) {
             catchIngredients();
-        }
-
-        /*if(catchIngredients() == 1){
-            image(imgInstructions2, 0, 0);
-        }else if(catchIngredients() == 2){
-            image(imgLose1, 0, 0);
-        }*/
-
-        if(key == 't'){
-            makeBurger();
         }
     }
 
@@ -245,7 +236,6 @@ public class Sketch extends PApplet {
         if(blnIsDoneInstructions3 == true){
             image(imgBackground3, 0, 0);
             image(imgBurger3, intBurgerX, intBurgerY);
-            System.out.println(intBurgerX + " " + intBurgerY);
 
             if((intBurgerX == 345) && (intBurgerY == 259)){
 
@@ -253,9 +243,6 @@ public class Sketch extends PApplet {
                     // System.out.println(blnFireAlertHide);
                     image(imgFireAlert, 120, 40);
                 }
-
-
-                System.out.println(blnFireAlertHide);
 
 
                 if(blnFireAlertHide == true){
@@ -280,15 +267,12 @@ public class Sketch extends PApplet {
                         if(intTime3 < 0){
                             image(imgBackground3, 0, 0);
                             image(imgBurger3, intBurgerX, intBurgerY);
+                            image(imgLose3, 0, 0);
                             return 2;
                         }
                     }
                 
                 }
-            }
-
-            if (blnFireIsOut == true){
-                return 1;
             }
 
             if (abs(intBurgerX - 345) < 35 && abs(intBurgerY - 259) < 35){
@@ -331,6 +315,13 @@ public class Sketch extends PApplet {
             if (keySPressed) {
                 intBurgerY++;
             }
+        }
+
+        if (blnFireIsOut == true){
+            image(imgWin, 0, 0);
+            //blnInstructions3Show = false;
+            //blnIsDoneInstructions3 = false;
+            return 1;
         }
 
         return 0;
@@ -403,41 +394,26 @@ public class Sketch extends PApplet {
                             System.out.println(intAnswerArr[i]);
                             blnBoxHide2[i] = true;
                             intOrder++;
+                            delay(300);
                         }
                         else if (intOrder != intAnswerArr[i]) {
                                 System.out.println("wrong order");
                                 System.out.println(intLife);
                                 intLife = intLife - 1;
+                                delay(300);
                         }
 
-                        /*     
-                        if (intOrder == 0 && intAnswerArr[i] == 0) {
-                            blnBoxHide2[i] = true;
-                            intOrder++;
+                        if(intLife == 0){
+                            blnIsDoneInstructions2 = false;
+                            blnLose2Show = true;
+                            return 2;
                         }
-                        if (intOrder == 1 && intAnswerArr[i] == 1) {
-                            blnBoxHide2[i] = true;
-                            intOrder++;
-                        }
-                        if (intOrder == 2 && intAnswerArr[i] == 2) {
-                            blnBoxHide2[i] = true;
-                            intOrder++;
-                        }
-                        if (intOrder == 3 && intAnswerArr[i] == 3) {
-                            blnBoxHide2[i] = true;
-                            intOrder++;
-                        }
-                        if (intOrder == 4 && intAnswerArr[i] == 4) {
-                            blnBoxHide2[i] = true;
-                            intOrder++;
-                        }
-                        if (intOrder == 5 ) {
-                            //write code that does stuff after all five boxes are opened
-                            System.out.println("done");
-                        }
-                        */
 
                     }
+                }
+
+                if(blnLose2Show == true){
+                    image(imgLose2, 0, 0);
                 }
 
                 if(blnBoxHide2[0] == true && blnBoxHide2[1] == true && blnBoxHide2[2] == true && blnBoxHide2[3] == true && blnBoxHide2[4] == true && intBoxShowTimer < -5){
