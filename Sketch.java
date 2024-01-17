@@ -18,8 +18,8 @@ public class Sketch extends PApplet {
 
 
 
-    ArrayList<Integer> order = new ArrayList<>();  // ArrayList to hold the correct order of the images
-    ArrayList<Integer> caught = new ArrayList<>(); // ArrayList to hold the images caught by the catcher
+    //ArrayList<Integer> order = new ArrayList<>();  // ArrayList to hold the correct order of the images
+    //ArrayList<Integer> caught = new ArrayList<>(); // ArrayList to hold the images caught by the catcher
 
   
     int intCatcherX;
@@ -36,6 +36,9 @@ public class Sketch extends PApplet {
     PImage[] imgBox2 = new PImage[5];
     Boolean[] blnBoxHide2 = {true, true, true, true, true}; 
     Integer[] intAnswerArr = {9, 9, 9, 9, 9};
+    int intOrder = 0;
+    int intBoxShowTimer;
+    int intLife = 3;
 
     boolean blnFirstStage2 = true;
     PImage imgBackground3;
@@ -51,8 +54,22 @@ public class Sketch extends PApplet {
     boolean keyWPressed = false;
 
     int intTime3;
-    int intBoxShowTimer;
+    PImage[] imgFire = new PImage [15];
+    Boolean[] blnHideFire = {false, false, false, false, false, false, false, false, false, false, false, false, false, false, false};
+    Float[] fltFireX = {random(20, 730), random(20, 730), random(20, 730), random(20, 730), random(20, 730), random(20, 730), random(20, 730), random(20, 730), random(20, 730), random(20, 730), random(20, 730), random(20, 730), random(20, 730), random(20, 730), random(20, 730)};
+    Float[] fltFireY = {random(20, 480), random(20, 480), random(20, 480), random(20, 480), random(20, 480), random(20, 480), random(20, 480), random(20, 480), random(20, 480), random(20, 480), random(20, 480), random(20, 480), random(20, 480), random(20, 480), random(20, 480)};
     
+    boolean blnFireIsOut = false;
+
+    PImage imgGameStart;
+    PImage imgInstructions1;
+    PImage imgInstructions2;
+    PImage imgInstructions3;
+    PImage imgLose1;
+    PImage imgLose2;
+    PImage imgLose3;
+    PImage imgWin;
+    boolean blnisDisplayed = false;
 
 
     public void settings() {
@@ -66,6 +83,7 @@ public class Sketch extends PApplet {
         imgBasket = loadImage("data/basket.png");
         imgBasket.resize(150, 75);
         intTime1 = 1000;
+        intLife = 3;
         
         // Set the initial position of the catcher
         intCatcherX = width / 2;
@@ -91,7 +109,6 @@ public class Sketch extends PApplet {
 
 
         int intRandomNo;
-        // Integer[] intAnswerArr = {9, 9, 9, 9, 9};
     
         boolean blnAssign;
      
@@ -131,6 +148,11 @@ public class Sketch extends PApplet {
             imgBox2[i].resize(100,100);
         }
 
+        for(int i = 0; i < 15; i++){
+            imgFire[i] = loadImage("data/fire 2.png");
+            imgFire[i].resize(120,120);
+        }
+
         
         imgBackground3 = loadImage("data/kitchen background 3.png");
         imgBackground3.resize(800, 600);
@@ -139,10 +161,18 @@ public class Sketch extends PApplet {
         intBurgerX = 20;
         intBurgerY = 470;
         intTime3 = 1000;
-        imgFireAlert = loadImage("data/fire alert.png");
+        imgFireAlert = loadImage("data/fire alert 2.png");
         imgFireAlert.resize(600, 450);
         intBoxShowTimer = 300;
         blnFireAlertHide = false;
+        imgGameStart = loadImage("data/front page.png");
+        imgInstructions1 = loadImage("data/game 1 instructions.png");
+        imgInstructions2 = loadImage("data/game 2 instructions.png");
+        imgInstructions3 = loadImage("data/game 3 instructions.png");
+        imgLose1 = loadImage("data/lose 1.png");
+        imgLose2 = loadImage("data/lose 2.png");
+        imgLose3 = loadImage("data/lose 3.png");
+        imgWin = loadImage("data/win.png");
     }
 
     
@@ -151,10 +181,38 @@ public class Sketch extends PApplet {
      * Called repeatedly, anything drawn to the screen goes here
      */
     public void draw() {
+        gameRun();
         //makeBurger();
-        //fireOut();
-        makeBurger();
+        //System.out.println(fireOut());
+        //makeBurger();
         //System.out.println(catchIngredients());
+    }
+
+    public void gameRun(){
+        image(imgGameStart, 0, 0);
+
+        if(key == 'b'){
+            image(imgInstructions1, 0, 0);
+
+        }
+
+        /*if(key == 'v'){
+            image(imgGameStart, 0, 0);
+        }*/
+
+        if(key == 'n'){
+            catchIngredients();
+        }
+
+        /*if(catchIngredients() == 1){
+            image(imgInstructions2, 0, 0);
+        }else if(catchIngredients() == 2){
+            image(imgLose1, 0, 0);
+        }*/
+
+        if(key == 't'){
+            makeBurger();
+        }
     }
 
     public int fireOut(){
@@ -163,17 +221,11 @@ public class Sketch extends PApplet {
         image(imgBurger3, intBurgerX, intBurgerY);
         System.out.println(intBurgerX + " " + intBurgerY);
 
-
         if((intBurgerX == 345) && (intBurgerY == 259)){
-            //display the "Oh no, the kitchen caught on fire! Click on the fire to put them out"
 
             if(blnFireAlertHide == false){
                 // System.out.println(blnFireAlertHide);
-                image(imgFireAlert, 0, 0);
-            }
-
-            if(blnFireAlertHide == true){
-
+                image(imgFireAlert, 120, 40);
             }
 
 
@@ -181,9 +233,36 @@ public class Sketch extends PApplet {
 
 
             if(blnFireAlertHide == true){
-                System.out.println("timer start");
                 timer3();
+                for(int i = 0; i < 15; i++){
+                    if(blnHideFire[i] == false){
+                        image(imgFire[i], fltFireX[i], fltFireY[i]);
+                    }
+
+                    if (mousePressed) {
+                        if(dist(mouseX, mouseY, fltFireX[i] + 30, fltFireY[i] + 60) < 50){
+                            blnHideFire[i] = true;
+                        }
+                    }
+
+                    if(blnHideFire[0] == true && blnHideFire[1] == true && blnHideFire[2] == true && blnHideFire[3] == true && blnHideFire[4] == true && blnHideFire[5] == true && blnHideFire[6] == true && blnHideFire[7] == true && blnHideFire[8] == true && blnHideFire[9] == true && blnHideFire[10] == true && blnHideFire[11] == true && blnHideFire[12] == true && blnHideFire[13] == true && blnHideFire[14] == true && intTime3 > 0){
+                        image(imgBackground3, 0, 0);
+                        image(imgBurger3, intBurgerX, intBurgerY);
+                        blnFireIsOut = true;
+                    }
+
+                    if(intTime3 < 0){
+                        image(imgBackground3, 0, 0);
+                        image(imgBurger3, intBurgerX, intBurgerY);
+                        return 2;
+                    }
+                }
+            
             }
+        }
+
+        if (blnFireIsOut == true){
+            return 1;
         }
 
         if (abs(intBurgerX - 345) < 35 && abs(intBurgerY - 259) < 35){
@@ -227,7 +306,6 @@ public class Sketch extends PApplet {
             intBurgerY++;
         }
 
-        
         return 0;
     }
 
@@ -244,6 +322,19 @@ public class Sketch extends PApplet {
         image(imgBackground2, 0, 0);
 
 
+        // create the green rectangles, and set them to appear according to how many lives are left
+        fill(0, 255, 0);
+        if (intLife > 2) {
+            rect(310, 10, 20, 20);
+        }
+        if (intLife > 1) {
+            rect(340, 10, 20, 20);
+        }
+        if (intLife > 0) {
+            rect(370, 10, 20, 20);
+        }
+
+
         for(int i = 0; i < 5; i++){
 
             if(blnImageHide2[intAnswerArr[i]] == false){
@@ -253,47 +344,66 @@ public class Sketch extends PApplet {
                 }
             }
 
+            image(imgPlate, 200, 300);
+            fill(0, 0, 0);
+            textSize(25);
+            text("ITEM NEEDED:",315, 480);            
+
+
+            if (intOrder < 5) {
+                image(imgBurgerImages2[intOrder], 355, 500);
+            }
+
             if (mousePressed) {
+
                 if(dist(mouseX, mouseY, 70 + 140 * (i) + 35, 220) < 90){
-                    blnBoxHide2[i] = true;
-                    /* 
-                    while(blnBoxHide2[i] = true){
-                        if (intAnswerArr[i] == 0){
-                            //image(imgPlate, 200, 300);
-                            //fill(0, 0, 0);
-                            //textSize(25);
-                        // text("ITEM NEEDED:",315, 480);
-                            text("I'm here!", 20, 20);
-                            System.out.println("boxpressed");
-                        }
-                    //System.out.print(intAnswerArr[i]); 
-                    System.out.print(i);
-                    System.out.print(blnBoxHide2[i] + i);
+
+                    if ((intOrder == 0 && intAnswerArr[i] == 0) ||
+                        (intOrder == 1 && intAnswerArr[i] == 1) ||
+                        (intOrder == 2 && intAnswerArr[i] == 2) ||
+                        (intOrder == 3 && intAnswerArr[i] == 3) ||
+                        (intOrder == 4 && intAnswerArr[i] == 4)) {                        
+                        System.out.println(intAnswerArr[i]);
+                        blnBoxHide2[i] = true;
+                        intOrder++;
+                    }
+                    else if (intOrder != intAnswerArr[i]) {
+                            System.out.println("wrong order");
+                            System.out.println(intLife);
+                            intLife = intLife - 1;
+                    }
+
+                    /*     
+                    if (intOrder == 0 && intAnswerArr[i] == 0) {
+                        blnBoxHide2[i] = true;
+                        intOrder++;
+                    }
+                    if (intOrder == 1 && intAnswerArr[i] == 1) {
+                        blnBoxHide2[i] = true;
+                        intOrder++;
+                    }
+                    if (intOrder == 2 && intAnswerArr[i] == 2) {
+                        blnBoxHide2[i] = true;
+                        intOrder++;
+                    }
+                    if (intOrder == 3 && intAnswerArr[i] == 3) {
+                        blnBoxHide2[i] = true;
+                        intOrder++;
+                    }
+                    if (intOrder == 4 && intAnswerArr[i] == 4) {
+                        blnBoxHide2[i] = true;
+                        intOrder++;
+                    }
+                    if (intOrder == 5 ) {
+                        //write code that does stuff after all five boxes are opened
+                        System.out.println("done");
                     }
                     */
 
-                    System.out.print(i);
-
-                    
                 }
             }
 
-            /*if (intAnswerArr[i] == 0){
-                //image(imgPlate, 200, 300);
-                //fill(0, 0, 0);
-                //textSize(25);
-            // text("ITEM NEEDED:",315, 480);
-                text("I'm here!", 20, 20);
-                System.out.println("boxpressed");
-            }
-            */ 
-
         }
-
-        image(imgPlate, 200, 300);
-        fill(0, 0, 0);
-        textSize(25);
-        text("ITEM NEEDED:",315, 480);
 
         return 0;
 
@@ -331,13 +441,18 @@ public class Sketch extends PApplet {
             }
 
             if(blnImageHide[0] == true && blnImageHide[1] == true && blnImageHide[2] == true && blnImageHide[3] == true && blnImageHide[4] == true){
+                image(imgInstructions2, 0, 0);
                 return 1;
             }
 
             if(intTime1 <= 0){
-                for (i = 0; i < imgBurgerImages.length; i++){
-                    blnImageHide[i] = true;
+                /*for (i = 0; i < imgBurgerImages.length; i++){
+                    image(imgBackground, 0, 0);
+                    blnImageHide[i] = false;
                 }
+                 */
+                image(imgBackground, 0, 0);
+                image(imgLose1, 0, 0);
                 return 2;
             }
         }
