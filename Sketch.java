@@ -62,14 +62,24 @@ public class Sketch extends PApplet {
     boolean blnFireIsOut = false;
 
     PImage imgGameStart;
+    boolean blnGameStartShow = false;
     PImage imgInstructions1;
+    boolean blnInstructions1Show = false;
     PImage imgInstructions2;
+    boolean blnInstructions2Show = false;
     PImage imgInstructions3;
+    boolean blnInstructions3Show = false;
     PImage imgLose1;
+    boolean blnLose1Show = false;
     PImage imgLose2;
+    boolean blnLose2Show = false;
     PImage imgLose3;
+    boolean blnLose3Show = false;
     PImage imgWin;
-    boolean blnisDisplayed = false;
+    boolean blnWinShow = false;
+    boolean blnIsDoneInstructions1 = false;
+    boolean blnIsDoneInstructions2 = false;
+    boolean blnIsDoneInstructions3 = false;
 
 
     public void settings() {
@@ -170,9 +180,15 @@ public class Sketch extends PApplet {
         imgInstructions2 = loadImage("data/game 2 instructions.png");
         imgInstructions3 = loadImage("data/game 3 instructions.png");
         imgLose1 = loadImage("data/lose 1.png");
+        imgLose1.resize(800,600);
         imgLose2 = loadImage("data/lose 2.png");
+        imgLose2.resize(800,600);
         imgLose3 = loadImage("data/lose 3.png");
+        imgLose3.resize(800,600);
         imgWin = loadImage("data/win.png");
+        imgWin.resize(800,600);
+
+        blnInstructions1Show = true; // might have to change when front page added to false
     }
 
     
@@ -181,11 +197,11 @@ public class Sketch extends PApplet {
      * Called repeatedly, anything drawn to the screen goes here
      */
     public void draw() {
-        gameRun();
+        //gameRun();
         //makeBurger();
         //System.out.println(fireOut());
         //makeBurger();
-        //System.out.println(catchIngredients());
+        System.out.println(catchIngredients());
     }
 
     public void gameRun(){
@@ -217,93 +233,104 @@ public class Sketch extends PApplet {
 
     public int fireOut(){
 
-        image(imgBackground3, 0, 0);
-        image(imgBurger3, intBurgerX, intBurgerY);
-        System.out.println(intBurgerX + " " + intBurgerY);
+        if(blnInstructions3Show == true){
+            image(imgInstructions3, 0, 0);
+        }
 
-        if((intBurgerX == 345) && (intBurgerY == 259)){
+        if(key == 'u'){
+            blnInstructions3Show = false;
+            blnIsDoneInstructions3 = true;
+        }
 
-            if(blnFireAlertHide == false){
-                // System.out.println(blnFireAlertHide);
-                image(imgFireAlert, 120, 40);
-            }
+        if(blnIsDoneInstructions3 == true){
+            image(imgBackground3, 0, 0);
+            image(imgBurger3, intBurgerX, intBurgerY);
+            System.out.println(intBurgerX + " " + intBurgerY);
+
+            if((intBurgerX == 345) && (intBurgerY == 259)){
+
+                if(blnFireAlertHide == false){
+                    // System.out.println(blnFireAlertHide);
+                    image(imgFireAlert, 120, 40);
+                }
 
 
-            System.out.println(blnFireAlertHide);
+                System.out.println(blnFireAlertHide);
 
 
-            if(blnFireAlertHide == true){
-                timer3();
-                for(int i = 0; i < 15; i++){
-                    if(blnHideFire[i] == false){
-                        image(imgFire[i], fltFireX[i], fltFireY[i]);
-                    }
+                if(blnFireAlertHide == true){
+                    timer3();
+                    for(int i = 0; i < 15; i++){
+                        if(blnHideFire[i] == false){
+                            image(imgFire[i], fltFireX[i], fltFireY[i]);
+                        }
 
-                    if (mousePressed) {
-                        if(dist(mouseX, mouseY, fltFireX[i] + 30, fltFireY[i] + 60) < 50){
-                            blnHideFire[i] = true;
+                        if (mousePressed) {
+                            if(dist(mouseX, mouseY, fltFireX[i] + 30, fltFireY[i] + 60) < 50){
+                                blnHideFire[i] = true;
+                            }
+                        }
+
+                        if(blnHideFire[0] == true && blnHideFire[1] == true && blnHideFire[2] == true && blnHideFire[3] == true && blnHideFire[4] == true && blnHideFire[5] == true && blnHideFire[6] == true && blnHideFire[7] == true && blnHideFire[8] == true && blnHideFire[9] == true && blnHideFire[10] == true && blnHideFire[11] == true && blnHideFire[12] == true && blnHideFire[13] == true && blnHideFire[14] == true && intTime3 > 0){
+                            image(imgBackground3, 0, 0);
+                            image(imgBurger3, intBurgerX, intBurgerY);
+                            blnFireIsOut = true;
+                        }
+
+                        if(intTime3 < 0){
+                            image(imgBackground3, 0, 0);
+                            image(imgBurger3, intBurgerX, intBurgerY);
+                            return 2;
                         }
                     }
-
-                    if(blnHideFire[0] == true && blnHideFire[1] == true && blnHideFire[2] == true && blnHideFire[3] == true && blnHideFire[4] == true && blnHideFire[5] == true && blnHideFire[6] == true && blnHideFire[7] == true && blnHideFire[8] == true && blnHideFire[9] == true && blnHideFire[10] == true && blnHideFire[11] == true && blnHideFire[12] == true && blnHideFire[13] == true && blnHideFire[14] == true && intTime3 > 0){
-                        image(imgBackground3, 0, 0);
-                        image(imgBurger3, intBurgerX, intBurgerY);
-                        blnFireIsOut = true;
-                    }
-
-                    if(intTime3 < 0){
-                        image(imgBackground3, 0, 0);
-                        image(imgBurger3, intBurgerX, intBurgerY);
-                        return 2;
-                    }
+                
                 }
-            
             }
-        }
 
-        if (blnFireIsOut == true){
-            return 1;
-        }
+            if (blnFireIsOut == true){
+                return 1;
+            }
 
-        if (abs(intBurgerX - 345) < 35 && abs(intBurgerY - 259) < 35){
-            intBurgerX = 345;
-            intBurgerY = 259;
-        }
+            if (abs(intBurgerX - 345) < 35 && abs(intBurgerY - 259) < 35){
+                intBurgerX = 345;
+                intBurgerY = 259;
+            }
 
-        if(intBurgerX < 0){
-            intBurgerX = 0;
-        }
+            if(intBurgerX < 0){
+                intBurgerX = 0;
+            }
 
-        if(intBurgerX > 650){
-            intBurgerX = 650;
-        }
+            if(intBurgerX > 650){
+                intBurgerX = 650;
+            }
 
-        if(intBurgerY < 0){
-            intBurgerY = 0;
-        }
+            if(intBurgerY < 0){
+                intBurgerY = 0;
+            }
 
-        if(intBurgerY > 450){
-            intBurgerY = 450;
-        }
+            if(intBurgerY > 450){
+                intBurgerY = 450;
+            }
 
-        // if keyAPressed is true, the burger goes left
-        if (keyAPressed) {
-            intBurgerX--;
-        }
+            // if keyAPressed is true, the burger goes left
+            if (keyAPressed) {
+                intBurgerX--;
+            }
 
-        // if keyDPressed is true, the burger goes right
-        if (keyDPressed) {
-            intBurgerX++;
-        }
+            // if keyDPressed is true, the burger goes right
+            if (keyDPressed) {
+                intBurgerX++;
+            }
 
-        // if keyWPressed is true, the burger goes up
-        if (keyWPressed) {
-            intBurgerY--;
-        }
+            // if keyWPressed is true, the burger goes up
+            if (keyWPressed) {
+                intBurgerY--;
+            }
 
-        // if keySPressed is true, the burger goes down
-        if (keySPressed) {
-            intBurgerY++;
+            // if keySPressed is true, the burger goes down
+            if (keySPressed) {
+                intBurgerY++;
+            }
         }
 
         return 0;
@@ -311,98 +338,115 @@ public class Sketch extends PApplet {
 
     public int makeBurger(){
 
-        intBoxShowTimer += -1;
+        if(blnInstructions2Show == true){
+            image(imgInstructions2, 0, 0);
+        }
 
-        if(intBoxShowTimer == 0){
+        if(key == 't'){
+            blnInstructions2Show = false;
+            blnIsDoneInstructions2 = true;
+        }
+
+        if(blnIsDoneInstructions2 == true){
+            intBoxShowTimer += -1;
+
+            if(intBoxShowTimer == 0){
+                for(int i = 0; i < 5; i++){
+                    blnBoxHide2[i] = false;
+                }
+            }
+
+            image(imgBackground2, 0, 0);
+
+
+            // create the green rectangles, and set them to appear according to how many lives are left
+            fill(0, 255, 0);
+            if (intLife > 2) {
+                rect(310, 10, 20, 20);
+            }
+            if (intLife > 1) {
+                rect(340, 10, 20, 20);
+            }
+            if (intLife > 0) {
+                rect(370, 10, 20, 20);
+            }
+
+
             for(int i = 0; i < 5; i++){
-                blnBoxHide2[i] = false;
-            }
-        }
 
-        image(imgBackground2, 0, 0);
-
-
-        // create the green rectangles, and set them to appear according to how many lives are left
-        fill(0, 255, 0);
-        if (intLife > 2) {
-            rect(310, 10, 20, 20);
-        }
-        if (intLife > 1) {
-            rect(340, 10, 20, 20);
-        }
-        if (intLife > 0) {
-            rect(370, 10, 20, 20);
-        }
-
-
-        for(int i = 0; i < 5; i++){
-
-            if(blnImageHide2[intAnswerArr[i]] == false){
-                image(imgBurgerImages2[intAnswerArr[i]], 70 + 140 * (i), 220);
-                if(blnBoxHide2[i] == false){
-                    image(imgBox2[intAnswerArr[i]], 70 + 140 * (i), 220);
+                if(blnImageHide2[intAnswerArr[i]] == false){
+                    image(imgBurgerImages2[intAnswerArr[i]], 70 + 140 * (i), 220);
+                    if(blnBoxHide2[i] == false){
+                        image(imgBox2[intAnswerArr[i]], 70 + 140 * (i), 220);
+                    }
                 }
-            }
 
-            image(imgPlate, 200, 300);
-            fill(0, 0, 0);
-            textSize(25);
-            text("ITEM NEEDED:",315, 480);            
+                image(imgPlate, 200, 300);
+                fill(0, 0, 0);
+                textSize(25);
+                text("ITEM NEEDED:",315, 480);            
 
 
-            if (intOrder < 5) {
-                image(imgBurgerImages2[intOrder], 355, 500);
-            }
-
-            if (mousePressed) {
-
-                if(dist(mouseX, mouseY, 70 + 140 * (i) + 35, 220) < 90){
-
-                    if ((intOrder == 0 && intAnswerArr[i] == 0) ||
-                        (intOrder == 1 && intAnswerArr[i] == 1) ||
-                        (intOrder == 2 && intAnswerArr[i] == 2) ||
-                        (intOrder == 3 && intAnswerArr[i] == 3) ||
-                        (intOrder == 4 && intAnswerArr[i] == 4)) {                        
-                        System.out.println(intAnswerArr[i]);
-                        blnBoxHide2[i] = true;
-                        intOrder++;
-                    }
-                    else if (intOrder != intAnswerArr[i]) {
-                            System.out.println("wrong order");
-                            System.out.println(intLife);
-                            intLife = intLife - 1;
-                    }
-
-                    /*     
-                    if (intOrder == 0 && intAnswerArr[i] == 0) {
-                        blnBoxHide2[i] = true;
-                        intOrder++;
-                    }
-                    if (intOrder == 1 && intAnswerArr[i] == 1) {
-                        blnBoxHide2[i] = true;
-                        intOrder++;
-                    }
-                    if (intOrder == 2 && intAnswerArr[i] == 2) {
-                        blnBoxHide2[i] = true;
-                        intOrder++;
-                    }
-                    if (intOrder == 3 && intAnswerArr[i] == 3) {
-                        blnBoxHide2[i] = true;
-                        intOrder++;
-                    }
-                    if (intOrder == 4 && intAnswerArr[i] == 4) {
-                        blnBoxHide2[i] = true;
-                        intOrder++;
-                    }
-                    if (intOrder == 5 ) {
-                        //write code that does stuff after all five boxes are opened
-                        System.out.println("done");
-                    }
-                    */
-
+                if (intOrder < 5) {
+                    image(imgBurgerImages2[intOrder], 355, 500);
                 }
-            }
 
+                if (mousePressed) {
+
+                    if(dist(mouseX, mouseY, 70 + 140 * (i) + 35, 220) < 90){
+
+                        if ((intOrder == 0 && intAnswerArr[i] == 0) ||
+                            (intOrder == 1 && intAnswerArr[i] == 1) ||
+                            (intOrder == 2 && intAnswerArr[i] == 2) ||
+                            (intOrder == 3 && intAnswerArr[i] == 3) ||
+                            (intOrder == 4 && intAnswerArr[i] == 4)) {                        
+                            System.out.println(intAnswerArr[i]);
+                            blnBoxHide2[i] = true;
+                            intOrder++;
+                        }
+                        else if (intOrder != intAnswerArr[i]) {
+                                System.out.println("wrong order");
+                                System.out.println(intLife);
+                                intLife = intLife - 1;
+                        }
+
+                        /*     
+                        if (intOrder == 0 && intAnswerArr[i] == 0) {
+                            blnBoxHide2[i] = true;
+                            intOrder++;
+                        }
+                        if (intOrder == 1 && intAnswerArr[i] == 1) {
+                            blnBoxHide2[i] = true;
+                            intOrder++;
+                        }
+                        if (intOrder == 2 && intAnswerArr[i] == 2) {
+                            blnBoxHide2[i] = true;
+                            intOrder++;
+                        }
+                        if (intOrder == 3 && intAnswerArr[i] == 3) {
+                            blnBoxHide2[i] = true;
+                            intOrder++;
+                        }
+                        if (intOrder == 4 && intAnswerArr[i] == 4) {
+                            blnBoxHide2[i] = true;
+                            intOrder++;
+                        }
+                        if (intOrder == 5 ) {
+                            //write code that does stuff after all five boxes are opened
+                            System.out.println("done");
+                        }
+                        */
+
+                    }
+                }
+
+                if(blnBoxHide2[0] == true && blnBoxHide2[1] == true && blnBoxHide2[2] == true && blnBoxHide2[3] == true && blnBoxHide2[4] == true && intBoxShowTimer < -5){
+                    blnInstructions3Show = true;
+                    fireOut();
+                    return 1;
+                }
+
+            }
         }
 
         return 0;
@@ -411,56 +455,68 @@ public class Sketch extends PApplet {
 
     public int catchIngredients(){
 
-        intTime1 += -1;
-
-        // draw background
-        image(imgBackground, 0, 0);
-
-
-        for(int i = 0; i < imgBurgerImages.length; i++) {
-
-            if (blnImageHide[i] == false){
-                image(imgBurgerImages[i], fltImageX[i], fltImageY[i]);
-                fltImageY[i] += fltImageSpeed[i]; 
-            }
-
-            if (fltImageY[i] < 20){
-                break;
-            }
-
-            if(fltImageY[i] > 360 && fltImageY[i] < 400){
-                if (abs(fltImageX[i] - (intCatcherX+40)) <= 75){
-                    blnImageHide[i] = true;
-                }
-            }
-
-            if (fltImageY[i] > height) {
-                fltImageY[i] = (float) 21;
-                fltImageX[i] = random(width);
-                fltImageSpeed[i] = random(3,4);
-            }
-
-            if(blnImageHide[0] == true && blnImageHide[1] == true && blnImageHide[2] == true && blnImageHide[3] == true && blnImageHide[4] == true){
-                image(imgInstructions2, 0, 0);
-                return 1;
-            }
-
-            if(intTime1 <= 0){
-                /*for (i = 0; i < imgBurgerImages.length; i++){
-                    image(imgBackground, 0, 0);
-                    blnImageHide[i] = false;
-                }
-                 */
-                image(imgBackground, 0, 0);
-                image(imgLose1, 0, 0);
-                return 2;
-            }
+        if(blnInstructions1Show = true){
+            image(imgInstructions1, 0, 0);
         }
 
-        // Draw the catcher 
-        image(imgBasket, intCatcherX, 380);
-        // draw the timer to show over the images
-        timer1();
+        if(key == 'n'){
+            blnInstructions1Show = false;
+            blnIsDoneInstructions1 = true;
+        }
+
+        if(blnIsDoneInstructions1 == true){
+            intTime1 += -1;
+
+            // draw background
+            image(imgBackground, 0, 0);
+
+
+            for(int i = 0; i < imgBurgerImages.length; i++) {
+
+                if (blnImageHide[i] == false){
+                    image(imgBurgerImages[i], fltImageX[i], fltImageY[i]);
+                    fltImageY[i] += fltImageSpeed[i]; 
+                }
+
+                if (fltImageY[i] < 20){
+                    break;
+                }
+
+                if(fltImageY[i] > 360 && fltImageY[i] < 400){
+                    if (abs(fltImageX[i] - (intCatcherX+40)) <= 75){
+                        blnImageHide[i] = true;
+                    }
+                }
+
+                if (fltImageY[i] > height) {
+                    fltImageY[i] = (float) 21;
+                    fltImageX[i] = random(width);
+                    fltImageSpeed[i] = random(3,4);
+                }
+
+                if(blnImageHide[0] == true && blnImageHide[1] == true && blnImageHide[2] == true && blnImageHide[3] == true && blnImageHide[4] == true){
+                    image(imgInstructions2, 0, 0);
+                    blnInstructions2Show = true;
+                    makeBurger();
+                    return 1;
+                }
+
+                if(intTime1 <= 0){
+                    /*for (i = 0; i < imgBurgerImages.length; i++){
+                        image(imgBackground, 0, 0);
+                        blnImageHide[i] = false;
+                    }
+                    */
+                    image(imgLose1, 0, 0);
+                    return 2;
+                }
+            }
+
+            // Draw the catcher 
+            image(imgBasket, intCatcherX, 380);
+            // draw the timer to show over the images
+            timer1();
+        }
 
         return 0;
 
