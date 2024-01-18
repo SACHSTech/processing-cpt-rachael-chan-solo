@@ -39,6 +39,7 @@ public class Sketch extends PApplet {
     int intOrder = 0;
     int intBoxShowTimer;
     int intLife = 3;
+    PImage imgHeartLife;
 
     boolean blnFirstStage2 = true;
     PImage imgBackground3;
@@ -80,8 +81,8 @@ public class Sketch extends PApplet {
     boolean blnIsDoneInstructions1 = false;
     boolean blnIsDoneInstructions2 = false;
     boolean blnIsDoneInstructions3 = false;
-
     boolean blnGameStarted = false;
+    boolean blnWillRestart = false;
 
 
     public void settings() {
@@ -189,8 +190,10 @@ public class Sketch extends PApplet {
         imgLose3.resize(800,600);
         imgWin = loadImage("data/win.png");
         imgWin.resize(800,600);
+        imgHeartLife = loadImage("data/red heart.png");
+        imgHeartLife.resize(30, 40);
 
-        blnInstructions1Show = false; // might have to change when front page added to false
+        //blnInstructions1Show = false;
     }
 
     
@@ -211,10 +214,15 @@ public class Sketch extends PApplet {
             image(imgGameStart, 0, 0);
         }
 
+        if(blnWillRestart == true){
+            image(imgGameStart, 0, 0);
+        }
+
         if(key == 'b'){
             blnGameStartShow = false;
             blnInstructions1Show = true;
             blnGameStarted = true;
+            blnWillRestart = false;
         }
 
         if (blnGameStarted) {
@@ -264,7 +272,7 @@ public class Sketch extends PApplet {
                             blnFireIsOut = true;
                         }
 
-                        if(intTime3 < 0){
+                        if(intTime3 < 0 && blnFireIsOut == false){
                             image(imgBackground3, 0, 0);
                             image(imgBurger3, intBurgerX, intBurgerY);
                             image(imgLose3, 0, 0);
@@ -350,16 +358,15 @@ public class Sketch extends PApplet {
             image(imgBackground2, 0, 0);
 
 
-            // create the green rectangles, and set them to appear according to how many lives are left
-            fill(0, 255, 0);
+            
             if (intLife > 2) {
-                rect(310, 10, 20, 20);
+                image(imgHeartLife, 650, 10);
             }
             if (intLife > 1) {
-                rect(340, 10, 20, 20);
+                image(imgHeartLife, 700, 10);
             }
             if (intLife > 0) {
-                rect(370, 10, 20, 20);
+                image(imgHeartLife, 750, 10);
             }
 
 
@@ -477,12 +484,13 @@ public class Sketch extends PApplet {
                     return 1;
                 }
 
+                /*if(key == 'r'){
+                    blnWillRestart = true;
+                    gameRun();
+                }
+                */
+
                 if(intTime1 <= 0){
-                    /*for (i = 0; i < imgBurgerImages.length; i++){
-                        image(imgBackground, 0, 0);
-                        blnImageHide[i] = false;
-                    }
-                    */
                     image(imgLose1, 0, 0);
                     return 2;
                 }
