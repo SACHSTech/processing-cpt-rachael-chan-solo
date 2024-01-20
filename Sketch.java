@@ -1,7 +1,6 @@
 import processing.core.PApplet;
 import processing.core.PImage;
 import java.util.Arrays;
-// import java.util.Collections;
 
 public class Sketch extends PApplet {
     // declaring variables for Catching Ingredients (Game 1)
