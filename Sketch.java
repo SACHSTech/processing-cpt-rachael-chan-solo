@@ -2,17 +2,25 @@ import processing.core.PApplet;
 import processing.core.PImage;
 import java.util.Arrays;
 
+/**
+ * Freddy's Burgeria - Make a Burger Game
+ * @author Rachael Chan
+ * 
+ */
 public class Sketch extends PApplet {
-    // declaring variables for Catching Ingredients (Game 1)
+    // declaring variables Catching Ingredients (Game 1)
     PImage imgBackground;
     PImage imgBasket;
-    PImage[] imgBurgerImages = new PImage[5]; //Array will hold five images
-    Float[] fltImageX = new Float[5]; // hold X positions of images
-    Float[] fltImageY = new Float[5]; // hold y opsitions of the images
-    Boolean[] blnImageHide = {false, false, false, false, false};  
+    PImage[] imgBurgerImages = new PImage[5];
+    // hold X positions of images
+    Float[] fltImageX = new Float[5]; 
+    // hold y positions of the images
+    Float[] fltImageY = new Float[5];
+    Boolean[] blnImageHide = {false, false, false, false, false}; 
+    // array will generate the speeds of the images 
     Float[] fltImageSpeed = {(float)random(3,4), (float)random(3,4),
                         (float)random(3,4), (float)random(3,4),
-                        (float)random(3, 4)};
+                        (float)random(3, 4)}; 
 
     int intCatcherX;
     int intTime1;
@@ -20,9 +28,8 @@ public class Sketch extends PApplet {
     // declaring variables for making burger (Game 2)
     PImage imgBackground2;
     PImage imgPlate;
-    PImage[] imgBurgerImages2 = new PImage[5]; // Array will hold five images`
+    PImage[] imgBurgerImages2 = new PImage[5]; 
     Boolean[] blnImageHide2 = {false, false, false, false, false}; 
-    String strPlateList;
     int intStart = (int) random(0, 4);
     int addNumber = (int) random(2, 4);
     PImage[] imgBox2 = new PImage[5];
@@ -136,13 +143,13 @@ public class Sketch extends PApplet {
         int intRandomNo;
         boolean blnAssign;
      
-        for (int iCnt = 0; iCnt <= 4; iCnt++) {
+        for (int intCnt = 0; intCnt <= 4; intCnt++) {
             blnAssign = false;
             intRandomNo = (int)random(0, 5);
     
             while (blnAssign == false) {
                 if (intAnswerArr[intRandomNo] == 9) {
-                    intAnswerArr[intRandomNo] = iCnt;
+                    intAnswerArr[intRandomNo] = intCnt;
                     blnAssign = true;
                 }
                 else {
@@ -151,14 +158,14 @@ public class Sketch extends PApplet {
             } 
         }
     
-        for (int iCnt = 0; iCnt < 5; iCnt++) {
-            System.out.println(intAnswerArr[iCnt]);
+        for (int intCnt = 0; intCnt < 5; intCnt++) {
+            System.out.println(intAnswerArr[intCnt]);
         }
 
         // load the images for the boxes in game 2
-        for(int i = 0; i < 5; i++){
-            imgBox2[i] = loadImage("data/box2.png");
-            imgBox2[i].resize(100,100);
+        for(int intCount = 0; intCount < 5; intCount++){
+            imgBox2[intCount] = loadImage("data/box2.png");
+            imgBox2[intCount].resize(100,100);
         }
 
         // set 3 intial lives for game 2
@@ -442,11 +449,11 @@ public class Sketch extends PApplet {
                 fill(0, 0, 0);
                 // display "ITEM NEEDED:"" on the plate
                 textSize(25);
-                text("ITEM NEEDED:",315, 480);            
+                text("NEXT ITEM NEEDED:",285, 460);            
 
                 // displays the next topping needed to be clicked on the plate
                 if (intOrder < 5) {
-                    image(imgBurgerImages2[intOrder], 355, 500);
+                    image(imgBurgerImages2[intOrder], 355, 480);
                 }
 
                 if (mousePressed) {
@@ -515,7 +522,7 @@ public class Sketch extends PApplet {
      * @return 1 returns if the user has won the game, 2 returns if the user has lost the game, and 0 returns if the game is still going
      */
     public int fireOut(){
-
+        blnInstructions2Show = false;
         if(blnInstructions3Show == true){
             // draw the instructions for the game
             image(imgInstructions3, 0, 0);

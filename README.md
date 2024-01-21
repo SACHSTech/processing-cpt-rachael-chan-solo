@@ -17,7 +17,6 @@ Players are scored based on their ability to complete the challenges within the 
 
 Example of losing screen: 
 
-![](data/lose%202.png)
-
+![](data/vlose%202.png)
 ## Limitations
 Once a losing or winning screen is shown, the user must exit and restart the game in order to play the game again. 
